@@ -2,10 +2,10 @@
 
 > Educational personal finance and investing platform
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-0ea5e9?style=for-the-badge)](https://wealthharbor.com)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-0ea5e9?style=for-the-badge)](https://wealthharbor-black.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-wealthharbor-181717?style=for-the-badge&logo=github)](https://github.com/Ayushkumarsingh09/wealthharbor)
 
-**Live website:** [https://wealthharbor.com](https://wealthharbor.com)
+**Live demo:** [https://wealthharbor-black.vercel.app](https://wealthharbor-black.vercel.app)
 
 Personal finance education covering investing, budgeting, taxes, and wealth-building with clear, practical guides.
 
@@ -14,8 +14,6 @@ Personal finance education covering investing, budgeting, taxes, and wealth-buil
 ### Homepage
 
 ![WealthHarbor homepage](docs/screenshots/homepage.png)
-
-Live preview: [https://wealthharbor.com](https://wealthharbor.com)
 
 ## Highlights
 
@@ -31,22 +29,15 @@ Live preview: [https://wealthharbor.com](https://wealthharbor.com)
 |-------|------------|
 | Core | Astro, TypeScript, Tailwind CSS |
 | Author | Ayush |
-| Homepage | https://wealthharbor.com |
+| Live demo | https://wealthharbor-black.vercel.app |
 
 ## Quick Start
 
 ```bash
-# Clone
 git clone https://github.com/Ayushkumarsingh09/wealthharbor.git
 cd wealthharbor
-
-# Install (Node projects)
 npm install
-
-# Develop
 npm run dev
-
-# Production build
 npm run build
 ```
 
@@ -61,10 +52,10 @@ README.md
 
 ## Deployment
 
-1. Configure environment values from `.env.example` when present
-2. Build or upload according to the stack above
-3. Point DNS to your host
-4. Verify production at https://wealthharbor.com
+Demo hosting: **Vercel**
+
+- Live demo: https://wealthharbor-black.vercel.app
+- Source: https://github.com/Ayushkumarsingh09/wealthharbor
 
 ## Author
 
