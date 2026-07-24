@@ -1,0 +1,125 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Terms and Conditions"
+  description="Read WealthHarbor's terms and conditions governing use of our website, content, and calculators."
+  canonical="/terms-and-conditions"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Terms & Conditions' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Terms and Conditions</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>1. Agreement to Terms</h2>
+        <p>These Terms and Conditions ("Terms") constitute a legally binding agreement between you and WealthHarbor governing your access to and use of {siteConfig.url} (the "Site"), including all content, calculators, tools, and services offered therein.</p>
+        <p>By accessing or using the Site, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree, you must not use the Site.</p>
+      </section>
+
+      <section>
+        <h2>2. Educational Purpose Only</h2>
+        <p>WealthHarbor is an educational publisher. All content — including articles, guides, calculators, and tools — is provided for informational and educational purposes only. Nothing on this Site constitutes financial advice, investment advice, tax advice, legal advice, or any other form of professional counsel.</p>
+        <p>You should consult qualified professionals before making financial decisions. See our <a href="/disclaimer">Disclaimer</a> and <a href="/financial-risk-disclosure">Financial Risk Disclosure</a> for additional information.</p>
+      </section>
+
+      <section>
+        <h2>3. Eligibility</h2>
+        <p>You must be at least 18 years old (or the age of majority in your jurisdiction) to use this Site. By using the Site, you represent that you meet this requirement and have the legal capacity to enter into these Terms.</p>
+      </section>
+
+      <section>
+        <h2>4. Intellectual Property</h2>
+        <p>All content on the Site — including text, graphics, logos, images, software, and compilation thereof — is the property of WealthHarbor or its content suppliers and is protected by copyright, trademark, and other intellectual property laws.</p>
+        <p>You may:</p>
+        <ul>
+          <li>View and read content for personal, non-commercial educational use</li>
+          <li>Share links to our articles via social media or email</li>
+          <li>Quote brief excerpts with proper attribution and a link to the original article</li>
+        </ul>
+        <p>You may not:</p>
+        <ul>
+          <li>Reproduce, republish, or redistribute substantial portions of our content without written permission</li>
+          <li>Use our content for commercial purposes without authorization</li>
+          <li>Remove copyright notices or attributions</li>
+          <li>Scrape, crawl, or systematically download content using automated tools</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>5. User Conduct</h2>
+        <p>When using the Site, you agree not to:</p>
+        <ul>
+          <li>Violate any applicable law or regulation</li>
+          <li>Submit false, misleading, or spam content through our forms</li>
+          <li>Attempt to gain unauthorized access to our systems</li>
+          <li>Interfere with the proper functioning of the Site</li>
+          <li>Use the Site to distribute malware or harmful code</li>
+          <li>Impersonate WealthHarbor staff or other users</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. Calculators and Tools</h2>
+        <p>Our financial calculators provide estimates based on the inputs you provide and the assumptions documented on each calculator page. Results are approximations for educational purposes and may not reflect actual outcomes. We make no warranty regarding the accuracy of calculator results.</p>
+      </section>
+
+      <section>
+        <h2>7. Third-Party Links</h2>
+        <p>The Site may contain links to third-party websites. We do not control and are not responsible for the content, privacy practices, or availability of external sites. Inclusion of a link does not imply endorsement.</p>
+      </section>
+
+      <section>
+        <h2>8. Advertising and Affiliate Relationships</h2>
+        <p>The Site may display advertisements and contain affiliate links. See our <a href="/advertising-disclosure">Advertising Disclosure</a> and <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details on how these relationships work and how they may affect content.</p>
+      </section>
+
+      <section>
+        <h2>9. Disclaimer of Warranties</h2>
+        <p>THE SITE AND ALL CONTENT ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT.</p>
+        <p>We do not warrant that the Site will be uninterrupted, error-free, or free of viruses or other harmful components.</p>
+      </section>
+
+      <section>
+        <h2>10. Limitation of Liability</h2>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, WEALTHHARBOR AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR GOODWILL, ARISING FROM YOUR USE OF THE SITE.</p>
+        <p>Our total liability for any claim arising from these Terms or your use of the Site shall not exceed one hundred U.S. dollars ($100).</p>
+      </section>
+
+      <section>
+        <h2>11. Indemnification</h2>
+        <p>You agree to indemnify and hold harmless WealthHarbor from any claims, damages, losses, or expenses (including reasonable attorneys' fees) arising from your violation of these Terms or misuse of the Site.</p>
+      </section>
+
+      <section>
+        <h2>12. Modifications</h2>
+        <p>We reserve the right to modify these Terms at any time. Changes take effect upon posting to this page with an updated date. Continued use of the Site after changes constitutes acceptance of the revised Terms.</p>
+      </section>
+
+      <section>
+        <h2>13. Governing Law</h2>
+        <p>These Terms are governed by the laws of the State of Delaware, United States, without regard to conflict of law principles. Any disputes shall be resolved in the state or federal courts located in Delaware.</p>
+      </section>
+
+      <section>
+        <h2>14. Severability</h2>
+        <p>If any provision of these Terms is found unenforceable, the remaining provisions shall continue in full force and effect.</p>
+      </section>
+
+      <section>
+        <h2>15. Contact</h2>
+        <p>Questions about these Terms? Contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

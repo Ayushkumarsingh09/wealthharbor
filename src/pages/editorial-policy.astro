@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Editorial Policy"
+  description="WealthHarbor's editorial standards for accuracy, sourcing, independence, and content review."
+  canonical="/editorial-policy"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Editorial Policy' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Editorial Policy</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>Our Commitment</h2>
+        <p>WealthHarbor is committed to publishing accurate, clear, and unbiased financial education. Our editorial standards ensure that every article meets rigorous quality benchmarks before and after publication.</p>
+      </section>
+
+      <section>
+        <h2>Content Creation Process</h2>
+        <ol>
+          <li><strong>Research:</strong> Writers begin with primary sources — SEC and FINRA publications, Federal Reserve materials, IRS guidance, peer-reviewed research, and established financial institutions.</li>
+          <li><strong>Drafting:</strong> Content is written in plain language with defined terms, practical examples, and actionable educational takeaways.</li>
+          <li><strong>Editorial review:</strong> A senior editor reviews for clarity, structure, completeness, and adherence to our educational mission.</li>
+          <li><strong>Fact-checking:</strong> Our fact-checking team verifies claims, statistics, formulas, and regulatory references. See author profiles on our <a href="/about">About page</a>.</li>
+          <li><strong>Publication:</strong> Articles are published with author attribution, publication date, and category tags.</li>
+          <li><strong>Ongoing review:</strong> Content is reviewed monthly. Updated articles display a "last updated" date.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Editorial Independence</h2>
+        <p>Our editorial team operates independently from advertising and affiliate partnerships. Advertisers and affiliate partners do not influence topic selection, article conclusions, or editorial opinions. When affiliate links appear in content, they are clearly disclosed per our <a href="/affiliate-disclosure">Affiliate Disclosure</a>.</p>
+      </section>
+
+      <section>
+        <h2>Sourcing Standards</h2>
+        <p>We prioritize authoritative sources and cite them in article reference sections where applicable. We avoid:</p>
+        <ul>
+          <li>Unverified social media claims presented as fact</li>
+          <li>Anonymous sources for financial data</li>
+          <li>Outdated statistics without context</li>
+          <li>Promotional materials disguised as objective analysis</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Educational Framing</h2>
+        <p>All content is framed as educational material. We do not publish buy/sell recommendations, price targets, or personalized advice. Articles explain concepts and tools so readers can make informed decisions with professional guidance.</p>
+      </section>
+
+      <section>
+        <h2>Artificial Intelligence</h2>
+        <p>We may use AI tools to assist with research organization, outline generation, or grammar editing. All AI-assisted content is thoroughly reviewed, fact-checked, and edited by human editors before publication. We do not publish AI-generated content without human oversight.</p>
+      </section>
+
+      <section>
+        <h2>Corrections</h2>
+        <p>When errors are identified, we correct them promptly and transparently per our <a href="/corrections-policy">Corrections Policy</a>. Material corrections include an editor's note on the affected article.</p>
+      </section>
+
+      <section>
+        <h2>Reader Feedback</h2>
+        <p>We welcome reader feedback and correction requests. Contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> with the subject line "Correction Request" or use our <a href="/contact">Contact form</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

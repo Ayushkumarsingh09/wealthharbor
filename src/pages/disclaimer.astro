@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Disclaimer"
+  description="WealthHarbor's educational disclaimer. Our content is for learning purposes only and does not constitute financial advice."
+  canonical="/disclaimer"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Disclaimer' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Educational Disclaimer</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="rounded-lg border border-amber-200 bg-amber-50 p-6 mb-8 text-amber-900">
+      <p class="font-semibold text-lg mb-2">Important Notice</p>
+      <p>WealthHarbor provides educational content only. We are not a registered investment advisor, broker-dealer, financial planner, tax advisor, or legal counsel. Nothing on this website should be interpreted as personalized financial advice.</p>
+    </div>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>General Information Only</h2>
+        <p>All articles, guides, calculators, and tools published on {siteConfig.url} are intended solely for general educational and informational purposes. The content explains financial concepts, terminology, strategies, and tools to help you learn about personal finance and investing.</p>
+        <p>Educational content cannot account for your individual financial situation, goals, risk tolerance, tax status, or legal circumstances. What is appropriate for one person may be unsuitable for another.</p>
+      </section>
+
+      <section>
+        <h2>Not Financial Advice</h2>
+        <p>WealthHarbor does not provide:</p>
+        <ul>
+          <li>Investment recommendations or stock picks</li>
+          <li>Personalized portfolio advice</li>
+          <li>Tax planning or tax filing guidance</li>
+          <li>Legal or estate planning advice</li>
+          <li>Insurance product recommendations</li>
+          <li>Credit or debt counseling services</li>
+        </ul>
+        <p>Any examples, scenarios, or hypothetical calculations presented on the Site are illustrative only and do not represent actual investment results or guarantees of future performance.</p>
+      </section>
+
+      <section>
+        <h2>No Client Relationship</h2>
+        <p>Your use of this Site does not create a client, advisory, fiduciary, or professional relationship between you and WealthHarbor. We have no duty to act in your best interest regarding any financial decision you make based on our content.</p>
+      </section>
+
+      <section>
+        <h2>Consult Qualified Professionals</h2>
+        <p>Before making significant financial decisions — including investing, borrowing, tax planning, estate planning, or retirement withdrawals — you should consult with appropriately licensed and qualified professionals such as:</p>
+        <ul>
+          <li>Certified Financial Planners (CFP)</li>
+          <li>Registered Investment Advisors (RIA)</li>
+          <li>Certified Public Accountants (CPA)</li>
+          <li>Tax attorneys</li>
+          <li>Licensed insurance agents</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Accuracy and Timeliness</h2>
+        <p>While we strive for accuracy through our <a href="/editorial-policy">Editorial Policy</a> and fact-checking process, financial regulations, tax laws, and market conditions change frequently. Content may become outdated between review cycles. Always verify critical information with primary sources and current regulations.</p>
+      </section>
+
+      <section>
+        <h2>Investment Risk</h2>
+        <p>All investments carry risk, including the potential loss of principal. Past performance does not guarantee future results. See our <a href="/financial-risk-disclosure">Financial Risk Disclosure</a> for a comprehensive discussion of investment risks.</p>
+      </section>
+
+      <section>
+        <h2>Calculator Limitations</h2>
+        <p>Our calculators use simplified models and assumptions. They do not account for all real-world variables such as taxes, transaction fees, inflation variability, market volatility, or changes in personal circumstances. Calculator outputs are estimates for learning, not financial projections.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>Questions about this disclaimer? Email <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

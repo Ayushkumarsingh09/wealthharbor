@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Corrections Policy"
+  description="How WealthHarbor handles factual corrections, updates, and reader-reported errors."
+  canonical="/corrections-policy"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Corrections Policy' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Corrections Policy</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>Our Standard</h2>
+        <p>Accuracy is fundamental to WealthHarbor's mission. When we publish incorrect information — whether a factual error, outdated statistic, misquoted regulation, or computational mistake — we correct it promptly and transparently.</p>
+      </section>
+
+      <section>
+        <h2>Types of Corrections</h2>
+        <h3>Minor Corrections</h3>
+        <p>Typographical errors, broken links, formatting issues, and clarifications that do not change the article's meaning. These are fixed silently with an updated "last modified" date.</p>
+
+        <h3>Material Corrections</h3>
+        <p>Factual errors that could mislead readers, including incorrect formulas, wrong regulatory information, inaccurate statistics, or misattributed quotes. Material corrections include a visible editor's note at the top or bottom of the article stating:</p>
+        <ul>
+          <li>What was incorrect</li>
+          <li>What the correct information is</li>
+          <li>When the correction was made</li>
+        </ul>
+
+        <h3>Retractions</h3>
+        <p>In rare cases where an entire article is found to be fundamentally flawed or based on discredited information, we may retract the article and replace it with a retraction notice explaining the reason.</p>
+      </section>
+
+      <section>
+        <h2>How to Report an Error</h2>
+        <p>If you believe you have found an error in our content, please report it:</p>
+        <ul>
+          <li>Email <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> with subject line "Correction Request"</li>
+          <li>Use our <a href="/contact">Contact form</a> and select "Correction Request"</li>
+        </ul>
+        <p>Please include:</p>
+        <ul>
+          <li>The URL of the article</li>
+          <li>The specific claim or passage that is incorrect</li>
+          <li>Your source for the correct information (if available)</li>
+        </ul>
+        <p>We aim to acknowledge correction requests within 2 business days and resolve verified errors within 5 business days.</p>
+      </section>
+
+      <section>
+        <h2>Review Process</h2>
+        <ol>
+          <li>The fact-checking team reviews the reported error</li>
+          <li>We verify against primary sources</li>
+          <li>If confirmed, the correction is implemented and documented</li>
+          <li>The reporter is notified of the outcome</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Update vs. Correction</h2>
+        <p>Routine content updates — such as refreshing statistics, adding new sections, or reflecting regulatory changes — are not corrections. These updates are noted with a revised "last updated" date but do not require an editor's note unless they change a previously stated fact.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

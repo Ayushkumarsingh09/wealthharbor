@@ -1,0 +1,86 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Cookie Policy"
+  description="Learn how WealthHarbor uses cookies and similar technologies, and how to manage your preferences."
+  canonical="/cookie-policy"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Cookie Policy' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Cookie Policy</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>What Are Cookies?</h2>
+        <p>Cookies are small text files placed on your device when you visit a website. They help the site remember your preferences, understand how you use the site, and deliver relevant content and advertisements. Similar technologies include web beacons, pixels, and local storage.</p>
+      </section>
+
+      <section>
+        <h2>How We Use Cookies</h2>
+        <p>WealthHarbor uses cookies and similar technologies for the following purposes:</p>
+
+        <h3>Essential Cookies</h3>
+        <p>Required for basic site functionality. These cannot be disabled without affecting how the Site works. Examples include session management and security tokens.</p>
+
+        <h3>Analytics Cookies</h3>
+        <p>Help us understand how visitors interact with the Site by collecting aggregated, anonymous usage data. We may use Google Analytics or similar services. This data helps us improve content and user experience.</p>
+
+        <h3>Advertising Cookies</h3>
+        <p>We do not currently use advertising cookies. If we enable display advertising in the future (such as Google AdSense), advertising partners may set cookies to deliver relevant ads and measure ad performance. These cookies may track browsing activity across websites. See our <a href="/advertising-disclosure">Advertising Disclosure</a> for details. We will update this policy when advertising is activated.</p>
+
+        <h3>Functional Cookies</h3>
+        <p>Remember your preferences such as newsletter signup status, search history (stored locally), and display settings.</p>
+      </section>
+
+      <section>
+        <h2>Third-Party Cookies</h2>
+        <p>Some cookies are set by third-party services embedded in our pages:</p>
+        <ul>
+          <li><strong>Google Analytics:</strong> Traffic and behavior analysis (if enabled)</li>
+          <li><strong>Google AdSense:</strong> Display advertising (not currently active — see <a href="/advertising-disclosure">Advertising Disclosure</a>)</li>
+          <li><strong>Social media platforms:</strong> Share buttons and embedded content</li>
+          <li><strong>Email providers:</strong> Newsletter subscription tracking</li>
+        </ul>
+        <p>We do not control third-party cookies. Please review the privacy policies of these providers for more information.</p>
+      </section>
+
+      <section>
+        <h2>Managing Cookies</h2>
+        <p>You can control cookies through several methods:</p>
+        <ul>
+          <li><strong>Browser settings:</strong> Most browsers allow you to block or delete cookies. Visit your browser's help section for instructions.</li>
+          <li><strong>Google Analytics opt-out:</strong> Install the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener noreferrer" target="_blank">Google Analytics Opt-out Browser Add-on</a>.</li>
+          <li><strong>Ad personalization:</strong> Manage Google ad settings at <a href="https://adssettings.google.com" rel="noopener noreferrer" target="_blank">adssettings.google.com</a>.</li>
+          <li><strong>Industry opt-out:</strong> Visit <a href="https://optout.aboutads.info" rel="noopener noreferrer" target="_blank">aboutads.info</a> or <a href="https://www.youronlinechoices.eu" rel="noopener noreferrer" target="_blank">youronlinechoices.eu</a> (EU).</li>
+        </ul>
+        <p>Disabling certain cookies may limit Site functionality.</p>
+      </section>
+
+      <section>
+        <h2>Do Not Track</h2>
+        <p>Some browsers offer a "Do Not Track" (DNT) signal. There is no universal standard for responding to DNT signals. We currently do not alter our data collection practices in response to DNT signals, but we honor opt-out preferences set through the mechanisms described above.</p>
+      </section>
+
+      <section>
+        <h2>Updates</h2>
+        <p>We may update this Cookie Policy as our practices or applicable laws change. Check this page periodically for the latest information.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>Questions about our use of cookies? Email <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
