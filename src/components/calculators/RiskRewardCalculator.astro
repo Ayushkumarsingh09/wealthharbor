@@ -1,0 +1,79 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is a good risk-reward ratio?', answer: 'Many traders look for at least a 1:2 risk-reward ratio — risking $1 to potentially make $2. Higher ratios (1:3 or better) can be profitable even with a lower win rate.' },
+  { question: 'How do I set a profit target?', answer: 'Use technical levels like resistance/support, prior highs/lows, or Fibonacci extensions. Your target should be realistic based on the asset\'s typical price movement and volatility.' },
+  { question: 'Should I take trades with less than 1:1 risk-reward?', answer: 'Trades with less than 1:1 risk-reward require a very high win rate to be profitable. Most disciplined traders avoid setups where potential loss exceeds potential gain.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="rr-entry" class="block text-sm font-medium text-surface-800 mb-1.5">Entry Price ($)</label>
+        <input type="number" id="rr-entry" value="100" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="rr-target" class="block text-sm font-medium text-surface-800 mb-1.5">Profit Target ($)</label>
+        <input type="number" id="rr-target" value="120" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="rr-stop" class="block text-sm font-medium text-surface-800 mb-1.5">Stop Loss ($)</label>
+        <input type="number" id="rr-stop" value="90" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Risk reward results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Risk:Reward Ratio</p>
+        <p id="rr-ratio" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Potential Reward</p>
+        <p id="rr-reward" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Potential Risk</p>
+        <p id="rr-risk" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+    <p id="rr-verdict" class="mt-4 text-sm font-medium" aria-live="polite"></p>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatNumber, riskRewardRatio } from '@/utils/finance';
+
+  const ids = ['rr-entry', 'rr-target', 'rr-stop'];
+
+  function calc() {
+    const entry = parseFloat((document.getElementById('rr-entry') as HTMLInputElement)?.value) || 0;
+    const target = parseFloat((document.getElementById('rr-target') as HTMLInputElement)?.value) || 0;
+    const stop = parseFloat((document.getElementById('rr-stop') as HTMLInputElement)?.value) || 0;
+    const ratio = riskRewardRatio(entry, target, stop);
+    const reward = Math.abs(target - entry);
+    const risk = Math.abs(entry - stop);
+    (document.getElementById('rr-ratio') as HTMLElement).textContent = `1 : ${formatNumber(ratio, 2)}`;
+    (document.getElementById('rr-reward') as HTMLElement).textContent = formatCurrency(reward);
+    (document.getElementById('rr-risk') as HTMLElement).textContent = formatCurrency(risk);
+    const verdict = document.getElementById('rr-verdict') as HTMLElement;
+    if (ratio >= 2) {
+      verdict.textContent = 'Favorable risk-reward ratio (≥ 1:2).';
+      verdict.className = 'mt-4 text-sm font-medium text-green-700';
+    } else if (ratio >= 1) {
+      verdict.textContent = 'Moderate risk-reward ratio. Consider whether your win rate supports this setup.';
+      verdict.className = 'mt-4 text-sm font-medium text-amber-700';
+    } else {
+      verdict.textContent = 'Unfavorable ratio — potential risk exceeds reward.';
+      verdict.className = 'mt-4 text-sm font-medium text-red-700';
+    }
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

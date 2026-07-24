@@ -1,0 +1,78 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is SWP?', answer: 'A Systematic Withdrawal Plan (SWP) lets you withdraw a fixed amount regularly from an investment corpus while the remainder continues to earn returns. It is common in retirement income planning.' },
+  { question: 'How long will my corpus last?', answer: 'Duration depends on withdrawal amount, remaining returns, and inflation. Higher withdrawals or lower returns deplete the corpus faster. This calculator models monthly withdrawals with ongoing growth.' },
+  { question: 'Is SWP better than dividends for income?', answer: 'SWP provides predictable income regardless of dividend payouts. Dividends vary by company performance. Many retirees combine both — dividends for base income and SWP for supplemental needs.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="swp-corpus" class="block text-sm font-medium text-surface-800 mb-1.5">Initial Corpus ($)</label>
+        <input type="number" id="swp-corpus" value="1000000" min="0" step="10000" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="swp-withdraw" class="block text-sm font-medium text-surface-800 mb-1.5">Monthly Withdrawal ($)</label>
+        <input type="number" id="swp-withdraw" value="5000" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="swp-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Expected Annual Return (%)</label>
+        <input type="number" id="swp-rate" value="7" min="0" max="20" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="SWP calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Corpus Lasts</p>
+        <p id="swp-duration" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Withdrawn</p>
+        <p id="swp-total" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Final Balance</p>
+        <p id="swp-final" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+    <p id="swp-status" class="mt-4 text-sm font-medium" aria-live="polite"></p>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, swpDuration } from '@/utils/finance';
+
+  const ids = ['swp-corpus', 'swp-withdraw', 'swp-rate'];
+
+  function calc() {
+    const corpus = parseFloat((document.getElementById('swp-corpus') as HTMLInputElement)?.value) || 0;
+    const withdraw = parseFloat((document.getElementById('swp-withdraw') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('swp-rate') as HTMLInputElement)?.value) || 0;
+    const { months, years, finalBalance } = swpDuration(corpus, withdraw, rate);
+    const totalWithdrawn = withdraw * months;
+    const yearsDisplay = years >= 1 ? `${Math.floor(years)} yrs ${Math.round((years % 1) * 12)} mo` : `${months} mo`;
+    (document.getElementById('swp-duration') as HTMLElement).textContent = withdraw > 0 ? yearsDisplay : '—';
+    (document.getElementById('swp-total') as HTMLElement).textContent = formatCurrency(totalWithdrawn);
+    (document.getElementById('swp-final') as HTMLElement).textContent = formatCurrency(finalBalance);
+    const status = document.getElementById('swp-status') as HTMLElement;
+    if (withdraw > 0 && months >= 1200) {
+      status.textContent = 'Your corpus may last indefinitely at this withdrawal rate and return assumption.';
+      status.className = 'mt-4 text-sm font-medium text-green-700';
+    } else if (withdraw > 0) {
+      status.textContent = `Corpus depletes after approximately ${months} months of withdrawals.`;
+      status.className = 'mt-4 text-sm font-medium text-surface-700';
+    } else {
+      status.textContent = '';
+    }
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

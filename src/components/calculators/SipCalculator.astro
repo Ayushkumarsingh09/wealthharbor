@@ -1,0 +1,68 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is a SIP?', answer: 'A Systematic Investment Plan (SIP) is a method of investing a fixed amount at regular intervals — typically monthly — into mutual funds or other assets. It leverages dollar-cost averaging and compound growth.' },
+  { question: 'Does this SIP calculator account for step-up SIPs?', answer: 'This calculator uses a constant monthly investment. For step-up SIPs where you increase contributions annually, run separate projections or increase the monthly amount to an average.' },
+  { question: 'What annual return should I use?', answer: 'Use a realistic long-term expected return based on the asset class — for example, 10–12% for equity mutual funds or 6–8% for balanced funds. Past performance does not guarantee future results.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="sip-monthly" class="block text-sm font-medium text-surface-800 mb-1.5">Monthly Investment ($)</label>
+        <input type="number" id="sip-monthly" value="500" min="0" step="50" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" aria-describedby="sip-monthly-hint" />
+        <p id="sip-monthly-hint" class="mt-1 text-xs text-surface-500">Amount invested each month</p>
+      </div>
+      <div>
+        <label for="sip-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Expected Annual Return (%)</label>
+        <input type="number" id="sip-rate" value="12" min="0" max="50" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="sip-years" class="block text-sm font-medium text-surface-800 mb-1.5">Investment Period (Years)</label>
+        <input type="number" id="sip-years" value="10" min="1" max="50" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="SIP calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Invested</p>
+        <p id="sip-invested" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Estimated Returns</p>
+        <p id="sip-returns" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Future Value</p>
+        <p id="sip-fv" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, sipFutureValue } from '@/utils/finance';
+
+  const ids = ['sip-monthly', 'sip-rate', 'sip-years'];
+
+  function calc() {
+    const monthly = parseFloat((document.getElementById('sip-monthly') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('sip-rate') as HTMLInputElement)?.value) || 0;
+    const years = parseFloat((document.getElementById('sip-years') as HTMLInputElement)?.value) || 0;
+    const invested = monthly * years * 12;
+    const fv = sipFutureValue(monthly, rate, years);
+    const returns = fv - invested;
+    (document.getElementById('sip-invested') as HTMLElement).textContent = formatCurrency(invested);
+    (document.getElementById('sip-returns') as HTMLElement).textContent = formatCurrency(returns);
+    (document.getElementById('sip-fv') as HTMLElement).textContent = formatCurrency(fv);
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

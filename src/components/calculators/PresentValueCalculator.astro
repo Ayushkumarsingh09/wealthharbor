@@ -1,0 +1,66 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is present value?', answer: 'Present value (PV) is the current worth of a future sum of money, discounted at a given rate. A dollar received in the future is worth less than a dollar today.' },
+  { question: 'What discount rate should I use?', answer: 'Use your required rate of return, cost of capital, or a risk-free rate plus risk premium. Higher discount rates reduce present value, reflecting greater risk or opportunity cost.' },
+  { question: 'Where is present value used?', answer: 'Present value is fundamental in bond pricing, DCF valuation, annuity calculations, lawsuit settlements, and comparing investment opportunities with different timelines.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="pv-fv" class="block text-sm font-medium text-surface-800 mb-1.5">Future Value ($)</label>
+        <input type="number" id="pv-fv" value="50000" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="pv-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Discount Rate (%)</label>
+        <input type="number" id="pv-rate" value="6" min="0" max="50" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="pv-years" class="block text-sm font-medium text-surface-800 mb-1.5">Number of Years</label>
+        <input type="number" id="pv-years" value="10" min="1" max="50" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Present value results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Present Value</p>
+        <p id="pv-result" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Discount Amount</p>
+        <p id="pv-discount" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Discount Factor</p>
+        <p id="pv-factor" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatNumber, presentValue } from '@/utils/finance';
+
+  const ids = ['pv-fv', 'pv-rate', 'pv-years'];
+
+  function calc() {
+    const fv = parseFloat((document.getElementById('pv-fv') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('pv-rate') as HTMLInputElement)?.value) || 0;
+    const years = parseFloat((document.getElementById('pv-years') as HTMLInputElement)?.value) || 0;
+    const pv = presentValue(fv, rate, years);
+    const factor = fv > 0 ? pv / fv : 0;
+    (document.getElementById('pv-result') as HTMLElement).textContent = formatCurrency(pv);
+    (document.getElementById('pv-discount') as HTMLElement).textContent = formatCurrency(fv - pv);
+    (document.getElementById('pv-factor') as HTMLElement).textContent = formatNumber(factor, 4);
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

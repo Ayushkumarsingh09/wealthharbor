@@ -1,0 +1,67 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is margin trading?', answer: 'Margin trading lets you borrow money from your broker to buy securities, using your existing holdings as collateral. It amplifies both gains and losses.' },
+  { question: 'What is a margin call?', answer: 'A margin call occurs when your account equity falls below the broker\'s maintenance requirement. You must deposit more funds or sell positions to restore the required margin level.' },
+  { question: 'What margin requirement should I expect?', answer: 'Reg T margin for stocks is typically 50% initial margin (2:1 leverage). Day trading and options have different requirements. Brokers may impose higher requirements for volatile stocks.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="mg-equity" class="block text-sm font-medium text-surface-800 mb-1.5">Account Equity ($)</label>
+        <input type="number" id="mg-equity" value="25000" min="0" step="500" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="mg-requirement" class="block text-sm font-medium text-surface-800 mb-1.5">Margin Requirement (%)</label>
+        <input type="number" id="mg-requirement" value="50" min="1" max="100" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" aria-describedby="mg-req-hint" />
+        <p id="mg-req-hint" class="mt-1 text-xs text-surface-500">50% = 2:1 leverage (standard Reg T)</p>
+      </div>
+      <div>
+        <label for="mg-stock-price" class="block text-sm font-medium text-surface-800 mb-1.5">Stock Price ($)</label>
+        <input type="number" id="mg-stock-price" value="100" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Margin calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Buying Power</p>
+        <p id="mg-power" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Max Shares</p>
+        <p id="mg-shares" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Leverage</p>
+        <p id="mg-leverage" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatNumber, marginBuyingPower } from '@/utils/finance';
+
+  const ids = ['mg-equity', 'mg-requirement', 'mg-stock-price'];
+
+  function calc() {
+    const equity = parseFloat((document.getElementById('mg-equity') as HTMLInputElement)?.value) || 0;
+    const requirement = parseFloat((document.getElementById('mg-requirement') as HTMLInputElement)?.value) || 0;
+    const price = parseFloat((document.getElementById('mg-stock-price') as HTMLInputElement)?.value) || 0;
+    const { buyingPower, leverage } = marginBuyingPower(equity, requirement);
+    const shares = price > 0 ? Math.floor(buyingPower / price) : 0;
+    (document.getElementById('mg-power') as HTMLElement).textContent = formatCurrency(buyingPower);
+    (document.getElementById('mg-shares') as HTMLElement).textContent = formatNumber(shares, 0);
+    (document.getElementById('mg-leverage') as HTMLElement).textContent = `${formatNumber(leverage, 1)}x`;
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

@@ -1,0 +1,66 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is CAGR?', answer: 'Compound Annual Growth Rate (CAGR) is the smoothed annual rate of return that represents the constant rate at which an investment would have grown from beginning to ending value.' },
+  { question: 'How is CAGR different from average return?', answer: 'Average return can be misleading due to volatility. CAGR accounts for compounding and gives a single rate that reflects actual growth between two points in time.' },
+  { question: 'What is a good CAGR for investments?', answer: 'The S&P 500 has historically delivered roughly 10% nominal CAGR over long periods. Individual stocks and funds vary widely. Always compare CAGR to a relevant benchmark.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="cagr-begin" class="block text-sm font-medium text-surface-800 mb-1.5">Beginning Value ($)</label>
+        <input type="number" id="cagr-begin" value="10000" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="cagr-end" class="block text-sm font-medium text-surface-800 mb-1.5">Ending Value ($)</label>
+        <input type="number" id="cagr-end" value="25000" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="cagr-years" class="block text-sm font-medium text-surface-800 mb-1.5">Number of Years</label>
+        <input type="number" id="cagr-years" value="5" min="0.1" max="50" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="CAGR calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">CAGR</p>
+        <p id="cagr-rate" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Growth</p>
+        <p id="cagr-growth" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Absolute Gain</p>
+        <p id="cagr-gain" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatPercent, cagr } from '@/utils/finance';
+
+  const ids = ['cagr-begin', 'cagr-end', 'cagr-years'];
+
+  function calc() {
+    const begin = parseFloat((document.getElementById('cagr-begin') as HTMLInputElement)?.value) || 0;
+    const end = parseFloat((document.getElementById('cagr-end') as HTMLInputElement)?.value) || 0;
+    const years = parseFloat((document.getElementById('cagr-years') as HTMLInputElement)?.value) || 0;
+    const rate = cagr(begin, end, years);
+    const growth = begin > 0 ? ((end - begin) / begin) * 100 : 0;
+    (document.getElementById('cagr-rate') as HTMLElement).textContent = formatPercent(rate);
+    (document.getElementById('cagr-growth') as HTMLElement).textContent = formatPercent(growth);
+    (document.getElementById('cagr-gain') as HTMLElement).textContent = formatCurrency(end - begin);
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

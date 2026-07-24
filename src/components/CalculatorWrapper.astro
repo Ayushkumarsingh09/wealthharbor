@@ -1,0 +1,18 @@
+---
+import { calculators } from '@/data/calculators';
+
+interface Props {
+  slug: string;
+}
+
+const calc = calculators.find((c) => c.slug === Astro.props.slug);
+if (!calc) throw new Error(`Calculator not found: ${Astro.props.slug}`);
+---
+
+<div class="card" data-calculator={calc.slug}>
+  <slot />
+</div>
+
+<script define:vars={{ slug: calc.slug }}>
+  window.calculatorSlug = slug;
+</script>

@@ -1,0 +1,72 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is position sizing?', answer: 'Position sizing determines how many shares or units to buy based on your account size and risk tolerance. Proper sizing prevents a single losing trade from significantly damaging your portfolio.' },
+  { question: 'What risk percentage should I use?', answer: 'Many traders risk 1–2% of their account per trade. Conservative investors may use 0.5%, while aggressive traders sometimes risk up to 5%. Never risk more than you can afford to lose.' },
+  { question: 'How does stop-loss affect position size?', answer: 'A tighter stop-loss (closer to entry) allows a larger position for the same dollar risk. A wider stop-loss requires a smaller position to maintain the same risk amount.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="ps-account" class="block text-sm font-medium text-surface-800 mb-1.5">Account Size ($)</label>
+        <input type="number" id="ps-account" value="50000" min="0" step="1000" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="ps-risk" class="block text-sm font-medium text-surface-800 mb-1.5">Risk Per Trade (%)</label>
+        <input type="number" id="ps-risk" value="1" min="0.1" max="10" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="ps-entry" class="block text-sm font-medium text-surface-800 mb-1.5">Entry Price ($)</label>
+        <input type="number" id="ps-entry" value="150" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="ps-stop" class="block text-sm font-medium text-surface-800 mb-1.5">Stop Loss Price ($)</label>
+        <input type="number" id="ps-stop" value="140" min="0" step="0.01" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Position size results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Shares to Buy</p>
+        <p id="ps-shares" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Dollar Risk</p>
+        <p id="ps-risk-amt" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Position Value</p>
+        <p id="ps-value" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatNumber, positionSize } from '@/utils/finance';
+
+  const ids = ['ps-account', 'ps-risk', 'ps-entry', 'ps-stop'];
+
+  function calc() {
+    const account = parseFloat((document.getElementById('ps-account') as HTMLInputElement)?.value) || 0;
+    const risk = parseFloat((document.getElementById('ps-risk') as HTMLInputElement)?.value) || 0;
+    const entry = parseFloat((document.getElementById('ps-entry') as HTMLInputElement)?.value) || 0;
+    const stop = parseFloat((document.getElementById('ps-stop') as HTMLInputElement)?.value) || 0;
+    const shares = positionSize(account, risk, entry, stop);
+    const riskAmt = account * (risk / 100);
+    const value = shares * entry;
+    (document.getElementById('ps-shares') as HTMLElement).textContent = formatNumber(shares, 0);
+    (document.getElementById('ps-risk-amt') as HTMLElement).textContent = formatCurrency(riskAmt);
+    (document.getElementById('ps-value') as HTMLElement).textContent = formatCurrency(value);
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

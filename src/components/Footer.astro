@@ -1,0 +1,85 @@
+---
+import { siteConfig } from '@/data/site';
+import { categories } from '@/data/categories';
+
+const footerLinks = {
+  learn: categories.slice(0, 8).map((c) => ({ href: `/category/${c.slug}`, label: c.name })),
+  company: [
+    { href: '/about', label: 'About Us' },
+    { href: '/contact', label: 'Contact' },
+    { href: '/faq', label: 'FAQ' },
+    { href: '/authors/sarah-mitchell', label: 'Our Team' },
+  ],
+  legal: [
+    { href: '/privacy-policy', label: 'Privacy Policy' },
+    { href: '/terms-and-conditions', label: 'Terms & Conditions' },
+    { href: '/disclaimer', label: 'Disclaimer' },
+    { href: '/cookie-policy', label: 'Cookie Policy' },
+    { href: '/editorial-policy', label: 'Editorial Policy' },
+    { href: '/corrections-policy', label: 'Corrections Policy' },
+    { href: '/affiliate-disclosure', label: 'Affiliate Disclosure' },
+    { href: '/advertising-disclosure', label: 'Advertising Disclosure' },
+    { href: '/financial-risk-disclosure', label: 'Financial Risk Disclosure' },
+  ],
+  resources: [
+    { href: '/calculators', label: 'Calculators' },
+    { href: '/learn', label: 'All Articles' },
+    { href: '/sitemap', label: 'Sitemap' },
+    { href: '/rss.xml', label: 'RSS Feed' },
+  ],
+};
+---
+
+<footer class="border-t border-surface-200 bg-surface-900 text-surface-300">
+  <div class="container-main py-12 lg:py-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="lg:col-span-2">
+        <a href="/" class="inline-block mb-4">
+          <img src="/images/brand/logo-light.svg" alt={siteConfig.name} width="160" height="40" class="h-8 w-auto" loading="lazy" />
+        </a>
+        <p class="text-sm leading-relaxed mb-4 max-w-sm">
+          {siteConfig.description}
+        </p>
+        <p class="text-xs text-surface-300 mb-4">
+          <strong class="text-surface-200">Educational Disclaimer:</strong> WealthHarbor provides educational content only. We do not offer financial advice, investment recommendations, or personalized guidance.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Learn</h3>
+        <ul class="space-y-2">
+          {footerLinks.learn.map((link) => (
+            <li><a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Company</h3>
+        <ul class="space-y-2">
+          {footerLinks.company.map((link) => (
+            <li><a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold text-white mb-4">Legal</h3>
+        <ul class="space-y-2">
+          {footerLinks.legal.map((link) => (
+            <li><a href={link.href} class="text-sm hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-surface-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-sm">© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+      <div class="flex gap-4 text-sm">
+        {footerLinks.resources.map((link) => (
+          <a href={link.href} class="hover:text-white transition-colors">{link.label}</a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,99 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is an amortization schedule?', answer: 'An amortization schedule is a table showing each loan payment split between principal and interest, along with the remaining balance after each payment.' },
+  { question: 'Why is more interest paid early in a loan?', answer: 'Interest is calculated on the remaining balance. Early payments go mostly toward interest because the balance is highest. As principal decreases, more of each payment goes toward principal.' },
+  { question: 'How can I reduce total loan interest?', answer: 'Make extra principal payments, choose a shorter tenure, refinance at a lower rate, or make bi-weekly payments instead of monthly to reduce the effective balance faster.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="loan-principal" class="block text-sm font-medium text-surface-800 mb-1.5">Loan Amount ($)</label>
+        <input type="number" id="loan-principal" value="30000" min="0" step="500" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="loan-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Annual Interest Rate (%)</label>
+        <input type="number" id="loan-rate" value="6.5" min="0" max="30" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="loan-tenure" class="block text-sm font-medium text-surface-800 mb-1.5">Loan Tenure (Months)</label>
+        <input type="number" id="loan-tenure" value="60" min="1" max="360" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Loan calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Monthly Payment</p>
+        <p id="loan-emi" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Interest</p>
+        <p id="loan-interest" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Payment</p>
+        <p id="loan-total" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full text-sm text-left" aria-label="Loan amortization schedule preview">
+        <thead class="text-xs uppercase text-surface-600 border-b border-surface-200">
+          <tr>
+            <th scope="col" class="py-2 pr-4">Month</th>
+            <th scope="col" class="py-2 pr-4">Payment</th>
+            <th scope="col" class="py-2 pr-4">Principal</th>
+            <th scope="col" class="py-2 pr-4">Interest</th>
+            <th scope="col" class="py-2">Balance</th>
+          </tr>
+        </thead>
+        <tbody id="loan-schedule" class="text-surface-800"></tbody>
+      </table>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, emiCalculation, totalLoanInterest, generateAmortizationSchedule } from '@/utils/finance';
+
+  const ids = ['loan-principal', 'loan-rate', 'loan-tenure'];
+
+  function calc() {
+    const principal = parseFloat((document.getElementById('loan-principal') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('loan-rate') as HTMLInputElement)?.value) || 0;
+    const months = parseInt((document.getElementById('loan-tenure') as HTMLInputElement)?.value) || 0;
+    const emi = emiCalculation(principal, rate, months);
+    const interest = totalLoanInterest(principal, rate, months);
+    (document.getElementById('loan-emi') as HTMLElement).textContent = formatCurrency(emi);
+    (document.getElementById('loan-interest') as HTMLElement).textContent = formatCurrency(interest);
+    (document.getElementById('loan-total') as HTMLElement).textContent = formatCurrency(principal + interest);
+
+    const schedule = generateAmortizationSchedule(principal, rate, months);
+    const tbody = document.getElementById('loan-schedule') as HTMLElement;
+    const rows: string[] = [];
+    const show = [0, 1, 2, 3, 4, 5, schedule.length - 1].filter((i, idx, arr) => i < schedule.length && arr.indexOf(i) === idx);
+    show.forEach((i, idx) => {
+      if (idx > 0 && i - show[idx - 1] > 1) {
+        rows.push('<tr><td colspan="5" class="py-2 text-center text-surface-500">…</td></tr>');
+      }
+      const row = schedule[i];
+      rows.push(`<tr class="border-b border-surface-100">
+        <td class="py-2 pr-4">${row.month}</td>
+        <td class="py-2 pr-4">${formatCurrency(row.payment)}</td>
+        <td class="py-2 pr-4">${formatCurrency(row.principal)}</td>
+        <td class="py-2 pr-4">${formatCurrency(row.interest)}</td>
+        <td class="py-2">${formatCurrency(row.balance)}</td>
+      </tr>`);
+    });
+    tbody.innerHTML = rows.join('');
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

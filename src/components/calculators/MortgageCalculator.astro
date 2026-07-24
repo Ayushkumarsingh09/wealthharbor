@@ -1,0 +1,81 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is included in a mortgage payment?', answer: 'A full mortgage payment often includes principal, interest, property taxes, and homeowners insurance (PITI). This calculator separates principal & interest from escrow items.' },
+  { question: 'How much house can I afford?', answer: 'A common guideline is that housing costs should not exceed 28% of gross monthly income. Use this calculator to see if the total monthly payment fits your budget.' },
+  { question: 'Should I choose a 15-year or 30-year mortgage?', answer: 'A 15-year mortgage has higher monthly payments but significantly less total interest. A 30-year mortgage offers lower payments and more flexibility but costs more over the life of the loan.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="mtg-principal" class="block text-sm font-medium text-surface-800 mb-1.5">Home Price / Loan Amount ($)</label>
+        <input type="number" id="mtg-principal" value="350000" min="0" step="5000" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="mtg-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Annual Interest Rate (%)</label>
+        <input type="number" id="mtg-rate" value="6.75" min="0" max="20" step="0.05" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="mtg-years" class="block text-sm font-medium text-surface-800 mb-1.5">Loan Term (Years)</label>
+        <input type="number" id="mtg-years" value="30" min="1" max="40" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="mtg-tax" class="block text-sm font-medium text-surface-800 mb-1.5">Annual Property Tax ($)</label>
+        <input type="number" id="mtg-tax" value="4200" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="mtg-insurance" class="block text-sm font-medium text-surface-800 mb-1.5">Annual Insurance ($)</label>
+        <input type="number" id="mtg-insurance" value="1200" min="0" step="50" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="region" aria-live="polite" aria-label="Mortgage calculation results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Principal & Interest</p>
+        <p id="mtg-pi" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Taxes & Insurance</p>
+        <p id="mtg-escrow" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Monthly Payment</p>
+        <p id="mtg-total" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Total Interest Paid</p>
+        <p id="mtg-interest" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, mortgagePayment, totalLoanInterest } from '@/utils/finance';
+
+  const ids = ['mtg-principal', 'mtg-rate', 'mtg-years', 'mtg-tax', 'mtg-insurance'];
+
+  function calc() {
+    const principal = parseFloat((document.getElementById('mtg-principal') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('mtg-rate') as HTMLInputElement)?.value) || 0;
+    const years = parseFloat((document.getElementById('mtg-years') as HTMLInputElement)?.value) || 0;
+    const tax = parseFloat((document.getElementById('mtg-tax') as HTMLInputElement)?.value) || 0;
+    const insurance = parseFloat((document.getElementById('mtg-insurance') as HTMLInputElement)?.value) || 0;
+    const { principalInterest, totalMonthly, escrowMonthly } = mortgagePayment(principal, rate, years, tax, insurance);
+    const interest = totalLoanInterest(principal, rate, years * 12);
+    (document.getElementById('mtg-pi') as HTMLElement).textContent = formatCurrency(principalInterest);
+    (document.getElementById('mtg-escrow') as HTMLElement).textContent = formatCurrency(escrowMonthly);
+    (document.getElementById('mtg-total') as HTMLElement).textContent = formatCurrency(totalMonthly);
+    (document.getElementById('mtg-interest') as HTMLElement).textContent = formatCurrency(interest);
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>

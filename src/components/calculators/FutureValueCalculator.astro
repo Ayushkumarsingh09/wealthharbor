@@ -1,0 +1,65 @@
+---
+import CalculatorShell from './CalculatorShell.astro';
+import type { Calculator } from '@/data/calculators';
+
+interface Props { calculator: Calculator; }
+const { calculator } = Astro.props;
+
+const faqs = [
+  { question: 'What is future value?', answer: 'Future value (FV) is what a sum of money today will grow to at a specified date in the future, given a certain interest rate and compounding period.' },
+  { question: 'When is future value used?', answer: 'Future value calculations are used in retirement planning, savings goals, investment projections, and any scenario where you need to estimate growth over time.' },
+  { question: 'Does this calculator account for additional contributions?', answer: 'This calculator projects growth of a single lump sum. For regular monthly contributions, use the SIP Calculator instead.' },
+];
+---
+
+<CalculatorShell calculator={calculator} faqs={faqs}>
+  <div slot="calculator">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+      <div>
+        <label for="fv-pv" class="block text-sm font-medium text-surface-800 mb-1.5">Present Value ($)</label>
+        <input type="number" id="fv-pv" value="10000" min="0" step="100" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="fv-rate" class="block text-sm font-medium text-surface-800 mb-1.5">Annual Interest Rate (%)</label>
+        <input type="number" id="fv-rate" value="8" min="0" max="50" step="0.1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+      <div>
+        <label for="fv-years" class="block text-sm font-medium text-surface-800 mb-1.5">Number of Years</label>
+        <input type="number" id="fv-years" value="10" min="1" max="50" step="1" class="w-full rounded-lg border border-surface-200 px-4 py-2.5" />
+      </div>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Future value results">
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Future Value</p>
+        <p id="fv-result" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Interest Earned</p>
+        <p id="fv-interest" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+      <div class="rounded-lg bg-brand-50 border border-brand-100 p-4">
+        <p class="text-sm text-surface-600">Growth Multiple</p>
+        <p id="fv-multiple" class="text-xl font-bold text-brand-800">—</p>
+      </div>
+    </div>
+  </div>
+</CalculatorShell>
+
+<script>
+  import { formatCurrency, formatNumber, futureValue } from '@/utils/finance';
+
+  const ids = ['fv-pv', 'fv-rate', 'fv-years'];
+
+  function calc() {
+    const pv = parseFloat((document.getElementById('fv-pv') as HTMLInputElement)?.value) || 0;
+    const rate = parseFloat((document.getElementById('fv-rate') as HTMLInputElement)?.value) || 0;
+    const years = parseFloat((document.getElementById('fv-years') as HTMLInputElement)?.value) || 0;
+    const fv = futureValue(pv, rate, years);
+    (document.getElementById('fv-result') as HTMLElement).textContent = formatCurrency(fv);
+    (document.getElementById('fv-interest') as HTMLElement).textContent = formatCurrency(fv - pv);
+    (document.getElementById('fv-multiple') as HTMLElement).textContent = pv > 0 ? `${formatNumber(fv / pv, 2)}x` : '—';
+  }
+
+  calc();
+  ids.forEach((id) => document.getElementById(id)?.addEventListener('input', calc));
+</script>
