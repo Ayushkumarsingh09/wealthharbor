@@ -1,0 +1,83 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import FAQSection from '@/components/FAQSection.astro';
+import { siteConfig } from '@/data/site';
+
+const faqs = [
+  {
+    question: 'Is WealthHarbor financial advice?',
+    answer: 'No. WealthHarbor provides educational content only. We explain financial concepts, tools, and strategies for learning purposes. Always consult a qualified financial advisor, CPA, or attorney for personalized guidance tailored to your situation.',
+  },
+  {
+    question: 'Are your calculators free to use?',
+    answer: 'Yes. All 16 financial calculators on WealthHarbor are completely free with no registration required. Each calculator includes the underlying formula and a plain-language explanation of how it works.',
+  },
+  {
+    question: 'How often is content updated?',
+    answer: 'Our editorial team reviews and updates articles monthly. Each article displays its publication date and last updated date where applicable. Factual corrections are handled per our Corrections Policy.',
+  },
+  {
+    question: 'Who writes WealthHarbor content?',
+    answer: 'Content is created by our team of credentialed finance editors and analysts, then reviewed by our fact-checking team. You can view full author profiles on our About page.',
+  },
+  {
+    question: 'Can I use your content for my own website or course?',
+    answer: 'You may share links to our articles and quote brief excerpts with proper attribution and a link back to the original. Reproducing substantial portions of our content without written permission is not allowed. See our Terms and Conditions for details.',
+  },
+  {
+    question: 'How do I report an error in an article?',
+    answer: 'Email us at contact@wealthharbor.com with the subject line "Correction Request" or use our Contact form. Include the article URL, the specific error, and your source if available. We aim to respond within 2 business days.',
+  },
+  {
+    question: 'Do you sell my email address?',
+    answer: 'No. We never sell personal information. Newsletter subscribers receive only the content they opted into. See our Privacy Policy for full details on data handling.',
+  },
+  {
+    question: 'How does WealthHarbor make money?',
+    answer: 'WealthHarbor is currently funded by its founders. We do not display advertisements or use affiliate links at this time. We plan to apply for Google AdSense to help sustain our free educational content in the future. When monetization is enabled, it will not influence our editorial decisions. See our Advertising Disclosure and Affiliate Disclosure.',
+  },
+  {
+    question: 'Is WealthHarbor suitable for beginners?',
+    answer: 'Absolutely. We offer a structured learning roadmap starting with personal finance basics and progressing to advanced topics. Our Beginner guides use plain language and practical examples.',
+  },
+  {
+    question: 'Do you cover international finance topics?',
+    answer: 'While our primary audience is English-speaking readers, many concepts apply globally. Some articles reference U.S.-specific regulations (SEC, IRS, 401k). Always verify how concepts apply in your country and jurisdiction.',
+  },
+];
+---
+
+<BaseLayout
+  title="Frequently Asked Questions"
+  description="Answers to common questions about WealthHarbor's educational content, calculators, editorial standards, and policies."
+  canonical="/faq"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'FAQ' },
+    ]} />
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-4">Frequently Asked Questions</h1>
+      <p class="text-lg text-surface-800">
+        Find answers to common questions about {siteConfig.name}. Can't find what you're looking for? <a href="/contact" class="text-brand-600 hover:underline">Contact us</a>.
+      </p>
+    </header>
+
+    <FAQSection faqs={faqs} />
+
+    <section class="mt-12 card">
+      <h2 class="text-xl font-bold text-surface-900 mb-4">Related Policies</h2>
+      <ul class="grid gap-2 sm:grid-cols-2 text-sm">
+        <li><a href="/disclaimer" class="text-brand-600 hover:underline">Educational Disclaimer</a></li>
+        <li><a href="/privacy-policy" class="text-brand-600 hover:underline">Privacy Policy</a></li>
+        <li><a href="/editorial-policy" class="text-brand-600 hover:underline">Editorial Policy</a></li>
+        <li><a href="/corrections-policy" class="text-brand-600 hover:underline">Corrections Policy</a></li>
+        <li><a href="/affiliate-disclosure" class="text-brand-600 hover:underline">Affiliate Disclosure</a></li>
+        <li><a href="/financial-risk-disclosure" class="text-brand-600 hover:underline">Financial Risk Disclosure</a></li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

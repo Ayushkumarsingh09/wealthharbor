@@ -1,0 +1,103 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 16, 2026';
+---
+
+<BaseLayout
+  title="Advertising Disclosure"
+  description="How WealthHarbor handles advertising, including our current status and planned use of Google AdSense."
+  canonical="/advertising-disclosure"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Advertising Disclosure' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Advertising Disclosure</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>Current Status</h2>
+        <p>
+          <strong>WealthHarbor does not currently display third-party advertisements.</strong> All articles, calculators, and educational resources on this site are provided free of charge with no ads shown at this time.
+        </p>
+        <p>
+          We are preparing to apply for the Google AdSense program to help fund our editorial operations, hosting, and ongoing content updates. This page describes how we will handle advertising if and when it is implemented.
+        </p>
+      </section>
+
+      <section>
+        <h2>Why We Plan to Use Advertising</h2>
+        <p>
+          WealthHarbor is committed to keeping financial education free and accessible. Display advertising is a common, transparent way for educational publishers to cover the costs of research, fact-checking, hosting, and site maintenance without charging readers.
+        </p>
+      </section>
+
+      <section>
+        <h2>Planned Use of Google AdSense</h2>
+        <p>
+          If approved, we intend to use <a href="https://www.google.com/adsense" rel="noopener noreferrer" target="_blank">Google AdSense</a> to serve display advertisements. When active, Google and its advertising partners may use cookies and similar technologies to serve ads based on your prior visits to our site and other websites. You can learn more and manage ad personalization at <a href="https://adssettings.google.com" rel="noopener noreferrer" target="_blank">Google's Ads Settings</a>.
+        </p>
+        <p>
+          Google's use of advertising cookies enables it and its partners to serve ads based on a user's visit to our site and/or other sites on the Internet. Users may opt out of personalized advertising by visiting <a href="https://www.aboutads.info" rel="noopener noreferrer" target="_blank">aboutads.info</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>How Ads Will Be Displayed</h2>
+        <p>When advertising is enabled, ads may appear in clearly marked locations such as:</p>
+        <ul>
+          <li>Above or within article content</li>
+          <li>Sidebar areas on article and calculator pages</li>
+          <li>Between content sections on listing pages</li>
+        </ul>
+        <p>
+          Ads will be visually separated from editorial content and labeled as advertisements where required by law. We will not disguise ads as editorial content.
+        </p>
+      </section>
+
+      <section>
+        <h2>Editorial Independence</h2>
+        <p>
+          Advertisers and advertising networks will never influence our editorial decisions. The presence of an advertisement does not mean we endorse the advertised product or service. Our editorial team operates independently of all commercial relationships, as described in our <a href="/editorial-policy">Editorial Policy</a>.
+        </p>
+        <p>
+          We do not accept payment to write favorable reviews or to feature specific financial products in our educational articles.
+        </p>
+      </section>
+
+      <section>
+        <h2>Sponsored Content</h2>
+        <p>
+          If we ever publish sponsored content (material paid for by an advertiser), it will be clearly labeled as "Sponsored," "Advertisement," or "Paid Partnership" at the top of the page. Sponsored content will still be reviewed for factual accuracy but will be clearly distinguished from our independent educational articles.
+        </p>
+      </section>
+
+      <section>
+        <h2>Children's Advertising</h2>
+        <p>
+          Our site is intended for a general adult audience interested in personal finance education. It is not directed at children under 13, and we will not knowingly display advertising targeted at children.
+        </p>
+      </section>
+
+      <section>
+        <h2>Updates to This Policy</h2>
+        <p>
+          We will update this page when advertising is activated on the site. The "Last updated" date at the top of this page will reflect any changes. Continued use of the site after ads are enabled constitutes acceptance of this disclosure as updated.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions</h2>
+        <p>
+          For questions about our advertising practices, contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> or visit our <a href="/contact">Contact page</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,89 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 16, 2026';
+---
+
+<BaseLayout
+  title="Affiliate Disclosure"
+  description="WealthHarbor's affiliate disclosure explaining our current status and how future affiliate relationships will be handled."
+  canonical="/affiliate-disclosure"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Affiliate Disclosure' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Affiliate Disclosure</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>Current Status</h2>
+        <p>
+          <strong>WealthHarbor does not currently use affiliate links.</strong> External links in our articles point to authoritative sources, government agencies, and educational references — not to paid referral programs.
+        </p>
+        <p>
+          This page explains how we will handle affiliate relationships if we establish them in the future, in accordance with Federal Trade Commission (FTC) guidelines.
+        </p>
+      </section>
+
+      <section>
+        <h2>What Are Affiliate Links?</h2>
+        <p>
+          Affiliate links are URLs that track referrals from our site to a partner company. If a reader clicks an affiliate link and completes a qualifying action (such as opening an account or making a purchase), the referring site may earn a commission at no extra cost to the reader.
+        </p>
+      </section>
+
+      <section>
+        <h2>How We Will Handle Future Affiliate Relationships</h2>
+        <p>
+          If we add affiliate links in the future, we will:
+        </p>
+        <ul>
+          <li>Disclose the affiliate relationship clearly near the relevant content</li>
+          <li>Only link to products or services relevant to the educational topic being discussed</li>
+          <li>Never let commission rates influence which products we mention or how we evaluate them</li>
+          <li>Update this page to list active affiliate programs</li>
+        </ul>
+        <p>
+          Affiliate relationships will not affect our editorial independence. Our <a href="/editorial-policy">Editorial Policy</a> governs all content regardless of commercial relationships.
+        </p>
+      </section>
+
+      <section>
+        <h2>Editorial Independence</h2>
+        <p>
+          We do not write articles specifically to promote affiliate partners. The presence of an affiliate link — if ever added — will not constitute an endorsement or personalized recommendation. All content remains educational in nature.
+        </p>
+        <p>
+          Readers should always conduct their own research and consult qualified professionals before making financial decisions.
+        </p>
+      </section>
+
+      <section>
+        <h2>No Additional Cost to You</h2>
+        <p>
+          If affiliate links are introduced in the future, using them will not increase the price you pay for any product or service.
+        </p>
+      </section>
+
+      <section>
+        <h2>Updates to This Policy</h2>
+        <p>
+          We will update this page and the "Last updated" date when any affiliate program is activated. Active programs will be listed here with the date they were added.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions</h2>
+        <p>
+          If you have questions about our affiliate practices, contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> or visit our <a href="/contact">Contact page</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

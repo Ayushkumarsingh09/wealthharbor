@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+
+const lastUpdated = 'June 1, 2025';
+---
+
+<BaseLayout
+  title="Financial Risk Disclosure"
+  description="Important risk disclosures for investing, trading, and using financial calculators on WealthHarbor."
+  canonical="/financial-risk-disclosure"
+>
+  <div class="container-main py-8 lg:py-12 max-w-3xl">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Financial Risk Disclosure' },
+    ]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Financial Risk Disclosure</h1>
+    <p class="text-sm text-surface-800 mb-8">Last updated: {lastUpdated}</p>
+
+    <div class="rounded-lg border border-red-200 bg-red-50 p-6 mb-8 text-red-900">
+      <p class="font-semibold text-lg mb-2">Risk Warning</p>
+      <p>Investing and trading involve substantial risk of loss and are not suitable for every investor. You could lose some or all of your invested capital. Past performance is not indicative of future results.</p>
+    </div>
+
+    <div class="prose-content space-y-8 text-surface-800">
+      <section>
+        <h2>General Investment Risk</h2>
+        <p>All investments carry inherent risk. The value of investments can go down as well as up, and you may receive back less than you originally invested. No investment strategy can guarantee profits or protect against losses in declining markets.</p>
+        <p>Factors that can affect investment returns include:</p>
+        <ul>
+          <li>Market volatility and economic conditions</li>
+          <li>Interest rate changes</li>
+          <li>Inflation and purchasing power erosion</li>
+          <li>Currency exchange rate fluctuations</li>
+          <li>Political and regulatory changes</li>
+          <li>Company-specific events (earnings, management, fraud)</li>
+          <li>Liquidity risk (inability to sell at desired price)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Stock Market Risk</h2>
+        <p>Equity investments are subject to market risk, including the potential for significant short-term declines. Individual stocks may lose all value in cases of bankruptcy or fraud. Diversification reduces but does not eliminate market risk.</p>
+      </section>
+
+      <section>
+        <h2>Bond and Fixed Income Risk</h2>
+        <p>Bonds are subject to interest rate risk (prices fall when rates rise), credit risk (issuer default), and inflation risk (fixed payments lose purchasing power). Not all bonds are low-risk investments.</p>
+      </section>
+
+      <section>
+        <h2>Options and Derivatives Risk</h2>
+        <p>Options, futures, and other derivatives are complex instruments that can result in losses exceeding your initial investment. Leverage amplifies both gains and losses. These instruments are generally not suitable for inexperienced investors. Our options and futures content is strictly educational.</p>
+      </section>
+
+      <section>
+        <h2>Leverage and Margin Risk</h2>
+        <p>Trading on margin involves borrowing money to invest, which magnifies potential losses. You may be required to deposit additional funds (margin call) or have positions liquidated at unfavorable prices. Understand margin requirements before using leveraged products.</p>
+      </section>
+
+      <section>
+        <h2>International and Emerging Market Risk</h2>
+        <p>Investments in foreign markets carry additional risks including currency fluctuations, political instability, different regulatory standards, and reduced liquidity.</p>
+      </section>
+
+      <section>
+        <h2>Calculator and Projection Risk</h2>
+        <p>Financial calculators on WealthHarbor use simplified models with assumptions that may not reflect real-world conditions. Projected returns, retirement corpus estimates, and loan calculations are hypothetical illustrations. Actual results will vary based on fees, taxes, market performance, and personal circumstances not captured in our tools.</p>
+      </section>
+
+      <section>
+        <h2>No Guarantees</h2>
+        <p>WealthHarbor makes no representations or warranties regarding the future performance of any investment strategy, asset class, or financial product discussed in our content. Historical data and backtests are not reliable predictors of future performance.</p>
+      </section>
+
+      <section>
+        <h2>Seek Professional Guidance</h2>
+        <p>Before investing, assess your financial situation, investment objectives, risk tolerance, and time horizon. Consult a qualified financial advisor, especially before making decisions involving significant capital, complex products, or retirement funds.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>Questions about this disclosure? Email <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

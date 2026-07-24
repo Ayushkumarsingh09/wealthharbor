@@ -1,0 +1,92 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { authors, getAuthorBySlug } from '@/data/authors';
+import { getAllArticlesSorted } from '@/utils/articles';
+
+export async function getStaticPaths() {
+  return authors.map((author) => ({ params: { slug: author.slug } }));
+}
+
+const { slug } = Astro.params;
+const author = getAuthorBySlug(slug!);
+
+if (!author) {
+  return Astro.redirect('/404');
+}
+
+const allArticles = await getAllArticlesSorted();
+const authorArticles = allArticles.filter((a) => a.data.author === slug);
+const reviewedArticles = allArticles.filter((a) => a.data.reviewer === slug);
+---
+
+<BaseLayout
+  title={`${author.name} — ${author.role}`}
+  description={author.shortBio}
+  canonical={`/authors/${slug}`}
+  image={author.image}
+>
+  <div class="container-main py-8 lg:py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'About', href: '/about' },
+      { label: author.name },
+    ]} />
+
+    <header class="mb-10 flex flex-col sm:flex-row gap-6 items-start">
+      <img
+        src={author.image}
+        alt=""
+        width="120"
+        height="120"
+        class="rounded-full bg-surface-200 shrink-0"
+        loading="eager"
+      />
+      <div class="flex-1">
+        <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-1">{author.name}</h1>
+        <p class="text-lg text-brand-600 font-medium mb-4">{author.role}</p>
+        <p class="text-surface-800 leading-relaxed mb-4">{author.bio}</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          {author.credentials.map((cred) => (
+            <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">{cred}</span>
+          ))}
+        </div>
+        <div class="flex flex-wrap gap-2 mb-4">
+          {author.expertise.map((exp) => (
+            <span class="rounded-full bg-surface-100 px-3 py-1 text-xs text-surface-800">{exp}</span>
+          ))}
+        </div>
+        <div class="flex gap-3">
+          {author.social.twitter && (
+            <a href={author.social.twitter} class="text-sm text-brand-600 hover:underline" rel="noopener noreferrer" target="_blank">Twitter</a>
+          )}
+          {author.social.linkedin && (
+            <a href={author.social.linkedin} class="text-sm text-brand-600 hover:underline" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+          )}
+          <a href={`mailto:${author.social.email}`} class="text-sm text-brand-600 hover:underline">{author.social.email}</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="mb-12">
+      <h2 class="text-2xl font-bold text-surface-900 mb-6">Articles by {author.name}</h2>
+      {authorArticles.length > 0 ? (
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {authorArticles.map((article) => <ArticleCard article={article} />)}
+        </div>
+      ) : (
+        <p class="text-surface-800">No published articles yet.</p>
+      )}
+    </section>
+
+    {reviewedArticles.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-surface-900 mb-6">Fact-Checked by {author.name}</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {reviewedArticles.slice(0, 6).map((article) => <ArticleCard article={article} />)}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>

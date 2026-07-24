@@ -1,0 +1,162 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Newsletter from '@/components/Newsletter.astro';
+import FAQSection from '@/components/FAQSection.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig, trustSignals, learningRoadmap } from '@/data/site';
+import { categories } from '@/data/categories';
+import { calculators } from '@/data/calculators';
+
+const articles = await getCollection('articles');
+const sortedArticles = articles.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const featuredArticles = sortedArticles.filter((a) => a.data.featured).slice(0, 6);
+const popularArticles = sortedArticles.filter((a) => a.data.popular).slice(0, 4);
+const latestArticles = sortedArticles.slice(0, 8);
+const popularCalcs = calculators.slice(0, 8);
+
+const homepageFaqs = [
+  {
+    question: 'Is WealthHarbor financial advice?',
+    answer: 'No. WealthHarbor provides educational content only. We explain financial concepts, tools, and strategies for learning purposes. Always consult a qualified financial advisor for personalized guidance.',
+  },
+  {
+    question: 'Are your calculators free to use?',
+    answer: 'Yes. All 16 financial calculators on WealthHarbor are completely free with no registration required. They include detailed formulas and explanations.',
+  },
+  {
+    question: 'How often is content updated?',
+    answer: 'Our editorial team reviews and updates articles monthly. Each article displays its last updated date, and we follow our Corrections Policy for any factual changes.',
+  },
+  {
+    question: 'Who writes WealthHarbor content?',
+    answer: 'Content is created by our team of credentialed finance editors and analysts, then reviewed by our fact-checking team. View author profiles on our About page.',
+  },
+];
+---
+
+<BaseLayout title={siteConfig.name} description={siteConfig.description}>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-brand-800 via-brand-700 to-brand-900 text-white">
+    <div class="absolute inset-0 opacity-10">
+      <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100" height="100" fill="url(#grid)"/>
+      </svg>
+    </div>
+    <div class="container-main relative py-16 sm:py-24 lg:py-32">
+      <div class="max-w-3xl">
+        <p class="text-brand-200 font-medium mb-4">Free Financial Education for Everyone</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-balance mb-6">
+          Navigate Your Financial Future with Confidence
+        </h1>
+        <p class="text-lg sm:text-xl text-brand-100 leading-relaxed mb-8 max-w-2xl">
+          Master personal finance, investing, and wealth building with 100+ expert guides, 16 free calculators, and a structured learning roadmap.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/learn" class="btn-primary bg-white text-brand-700 hover:bg-brand-50 text-base px-6 py-3">Start Learning Free</a>
+          <a href="/calculators" class="btn-outline-light text-base px-6 py-3">Try Calculators</a>
+        </div>
+      </div>
+      <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+        {trustSignals.map((signal) => (
+          <div class="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-center">
+            <p class="text-sm font-semibold">{signal.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Articles -->
+  <section class="container-main py-16">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-surface-900">Featured Guides</h2>
+        <p class="text-surface-800 mt-1">Hand-picked articles to accelerate your financial education</p>
+      </div>
+      <a href="/learn" class="hidden sm:inline text-brand-600 font-semibold hover:underline">View all →</a>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {featuredArticles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+
+  <!-- Calculators -->
+  <section class="bg-surface-100 py-16">
+    <div class="container-main">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl sm:text-3xl font-bold text-surface-900">Popular Calculators</h2>
+        <p class="text-surface-800 mt-2">Free tools with formulas, explanations, and instant results</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {popularCalcs.map((calc) => (
+          <a href={`/calculators/${calc.slug}`} class="card group hover:border-brand-300">
+            <h3 class="font-bold text-surface-900 group-hover:text-brand-600 transition-colors">{calc.name}</h3>
+            <p class="text-sm text-surface-800 mt-1">{calc.shortDescription}</p>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/calculators" class="btn-primary">View All 16 Calculators</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning Roadmap -->
+  <section class="container-main py-16">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl sm:text-3xl font-bold text-surface-900">Your Finance Learning Roadmap</h2>
+      <p class="text-surface-800 mt-2">A structured path from money basics to advanced investing</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {learningRoadmap.map((step) => (
+        <div class="card relative">
+          <span class="absolute -top-3 -left-3 flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">{step.step}</span>
+          <h3 class="font-bold text-surface-900 mt-2 mb-2">{step.title}</h3>
+          <p class="text-sm text-surface-800 mb-4">{step.description}</p>
+          <div class="flex flex-wrap gap-2">
+            {step.categories.map((cat) => (
+              <a href={`/category/${cat}`} class="text-xs rounded-full bg-brand-50 px-2 py-1 text-brand-700 hover:bg-brand-100">{cat.replace(/-/g, ' ')}</a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="bg-surface-100 py-16">
+    <div class="container-main">
+      <h2 class="text-2xl sm:text-3xl font-bold text-surface-900 text-center mb-10">Explore Topics</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {categories.map((cat) => (
+          <a href={`/category/${cat.slug}`} class="card group hover:border-brand-300">
+            <h3 class="font-bold text-surface-900 group-hover:text-brand-600">{cat.name}</h3>
+            <p class="text-sm text-surface-800 mt-1 line-clamp-2">{cat.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Articles -->
+  <section class="container-main py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-surface-900 mb-8">Latest Articles</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {latestArticles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="container-main py-16">
+    <Newsletter />
+  </section>
+
+  <!-- FAQ -->
+  <section class="container-main pb-16 max-w-3xl mx-auto">
+    <FAQSection faqs={homepageFaqs} title="Common Questions" />
+  </section>
+</BaseLayout>

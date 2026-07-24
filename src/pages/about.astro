@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Newsletter from '@/components/Newsletter.astro';
+import { siteConfig } from '@/data/site';
+import { authors } from '@/data/authors';
+import { trustSignals } from '@/data/site';
+---
+
+<BaseLayout
+  title="About Us"
+  description="Learn about WealthHarbor's mission to make financial education accessible, our editorial standards, and the team behind 100+ expert guides."
+  canonical="/about"
+>
+  <div class="container-main py-8 lg:py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'About Us' },
+    ]} />
+
+    <header class="max-w-3xl mb-12">
+      <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-4">About WealthHarbor</h1>
+      <p class="text-lg text-surface-800 leading-relaxed">
+        WealthHarbor was founded in {siteConfig.founded} with a simple belief: everyone deserves access to clear, accurate financial education — regardless of income, background, or experience level.
+      </p>
+    </header>
+
+    <section class="mb-16 max-w-3xl">
+      <h2 class="text-2xl font-bold text-surface-900 mb-4">Our Mission</h2>
+      <p class="text-surface-800 leading-relaxed mb-4">
+        Financial literacy is one of the most impactful skills a person can develop, yet quality education remains gated behind paywalls, sales pitches, and jargon-heavy content. WealthHarbor exists to change that.
+      </p>
+      <p class="text-surface-800 leading-relaxed mb-4">
+        We publish free, expert-reviewed articles and calculators covering personal finance, investing, retirement planning, and advanced topics like options and quantitative finance. Our content is designed for self-directed learners who want to understand how money works — not be sold a product.
+      </p>
+      <p class="text-surface-800 leading-relaxed">
+        We are an educational publisher, not a financial advisory firm. We do not manage money, sell investment products, or provide personalized recommendations. Read our <a href="/disclaimer" class="text-brand-600 hover:underline">Disclaimer</a> and <a href="/editorial-policy" class="text-brand-600 hover:underline">Editorial Policy</a> for details.
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-surface-900 mb-6">What We Offer</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {trustSignals.map((signal) => (
+          <div class="card text-center">
+            <p class="font-bold text-surface-900">{signal.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-16 max-w-3xl">
+      <h2 class="text-2xl font-bold text-surface-900 mb-4">Our Editorial Standards</h2>
+      <p class="text-surface-800 leading-relaxed mb-4">
+        Every article on WealthHarbor goes through a multi-step review process before publication. Writers research topics using primary sources — SEC filings, Federal Reserve publications, academic research, and established financial institutions. A dedicated fact-checker reviews claims, formulas, and regulatory references.
+      </p>
+      <ul class="list-disc pl-6 space-y-2 text-surface-800">
+        <li>All content is written for educational purposes with clear disclaimers</li>
+        <li>Articles are reviewed monthly and display last-updated dates</li>
+        <li>Corrections are published transparently per our <a href="/corrections-policy" class="text-brand-600 hover:underline">Corrections Policy</a></li>
+        <li>All commercial relationships — including any future advertising or affiliate partnerships — are disclosed openly</li>
+      </ul>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold text-surface-900 mb-2">Meet Our Team</h2>
+      <p class="text-surface-800 mb-8 max-w-2xl">Our editorial team combines journalism, financial planning, investment analysis, and compliance expertise.</p>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {authors.map((author) => (
+          <a href={`/authors/${author.slug}`} class="card group flex gap-4 hover:border-brand-300">
+            <img src={author.image} alt="" width="80" height="80" class="rounded-full bg-surface-200 shrink-0" loading="lazy" />
+            <div>
+              <h3 class="font-bold text-surface-900 group-hover:text-brand-600 transition-colors">{author.name}</h3>
+              <p class="text-sm text-brand-600 font-medium mb-2">{author.role}</p>
+              <p class="text-sm text-surface-800 line-clamp-3">{author.shortBio}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-16 max-w-3xl">
+      <h2 class="text-2xl font-bold text-surface-900 mb-4">Contact Us</h2>
+      <p class="text-surface-800 leading-relaxed">
+        Have a question, correction, or partnership inquiry? Visit our <a href="/contact" class="text-brand-600 hover:underline">Contact page</a> or email us at <a href={`mailto:${siteConfig.email}`} class="text-brand-600 hover:underline">{siteConfig.email}</a>.
+      </p>
+    </section>
+
+    <Newsletter />
+  </div>
+</BaseLayout>

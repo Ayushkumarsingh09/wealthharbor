@@ -1,0 +1,98 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { siteConfig } from '@/data/site';
+import { categories } from '@/data/categories';
+import { calculators } from '@/data/calculators';
+import { authors } from '@/data/authors';
+import { getAllArticlesSorted } from '@/utils/articles';
+
+const articles = await getAllArticlesSorted();
+
+const staticPages = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/learn', label: 'All Articles' },
+  { href: '/search', label: 'Search' },
+  { href: '/calculators', label: 'Calculators' },
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms-and-conditions', label: 'Terms & Conditions' },
+  { href: '/disclaimer', label: 'Disclaimer' },
+  { href: '/cookie-policy', label: 'Cookie Policy' },
+  { href: '/editorial-policy', label: 'Editorial Policy' },
+  { href: '/corrections-policy', label: 'Corrections Policy' },
+  { href: '/affiliate-disclosure', label: 'Affiliate Disclosure' },
+  { href: '/advertising-disclosure', label: 'Advertising Disclosure' },
+  { href: '/financial-risk-disclosure', label: 'Financial Risk Disclosure' },
+  { href: '/rss.xml', label: 'RSS Feed' },
+];
+---
+
+<BaseLayout
+  title="Sitemap"
+  description="HTML sitemap of all pages on WealthHarbor — articles, categories, calculators, and policies."
+  canonical="/sitemap"
+>
+  <div class="container-main py-8 lg:py-12">
+    <Breadcrumbs items={[
+      { label: 'Home', href: '/' },
+      { label: 'Sitemap' },
+    ]} />
+
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-bold text-surface-900 mb-2">Sitemap</h1>
+      <p class="text-surface-800">Browse all pages on {siteConfig.name}. An XML sitemap is also available at <a href="/sitemap-index.xml" class="text-brand-600 hover:underline">/sitemap-index.xml</a>.</p>
+    </header>
+
+    <div class="grid gap-10 lg:grid-cols-2">
+      <section>
+        <h2 class="text-xl font-bold text-surface-900 mb-4">Main Pages</h2>
+        <ul class="space-y-2">
+          {staticPages.map((page) => (
+            <li><a href={page.href} class="text-brand-600 hover:underline">{page.label}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-surface-900 mb-4">Categories</h2>
+        <ul class="space-y-2">
+          {categories.map((cat) => (
+            <li><a href={`/category/${cat.slug}`} class="text-brand-600 hover:underline">{cat.name}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-surface-900 mb-4">Calculators</h2>
+        <ul class="space-y-2">
+          {calculators.map((calc) => (
+            <li><a href={`/calculators/${calc.slug}`} class="text-brand-600 hover:underline">{calc.name}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-surface-900 mb-4">Authors</h2>
+        <ul class="space-y-2">
+          {authors.map((author) => (
+            <li><a href={`/authors/${author.slug}`} class="text-brand-600 hover:underline">{author.name}</a></li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="lg:col-span-2">
+        <h2 class="text-xl font-bold text-surface-900 mb-4">Articles ({articles.length})</h2>
+        <ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {articles.map((article) => (
+            <li>
+              <a href={`/articles/${article.slug}`} class="text-sm text-brand-600 hover:underline">{article.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
