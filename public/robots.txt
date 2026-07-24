@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wealthharbor.com/sitemap-index.xml
+
+# Block admin/api paths from indexing
+Disallow: /api/
